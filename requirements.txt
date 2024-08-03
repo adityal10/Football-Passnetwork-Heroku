@@ -1,0 +1,6 @@
+pandas
+mplsoccer
+pathlib
+streamlit
+requests
+statsbombpy
