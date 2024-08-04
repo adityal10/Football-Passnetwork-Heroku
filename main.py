@@ -1,5 +1,6 @@
 from passnetwork import transform_data, plot_passes
 from matchdata import get_data, get_match_names, extract_data, read_data, get_team_names, team_statistics
+from heatmap import plot_heatmap
 
 import pandas as pd
 from statsbombpy import sb
@@ -59,6 +60,11 @@ def main():
             st.title("Summary Statistics")
             st.caption("This section deals with the normal statistics for the full game.")
             st.dataframe(team_stat_dict, use_container_width=True)
+
+            st.title("Heatmaps")
+            st.caption("You can see the heat maps of passes during that game")
+            plot_heatmap(df, teams)
+            
     else:
         st.warning("Select 2022 season")
 
@@ -72,4 +78,3 @@ if __name__ == '__main__':
 
     if competition:
         main()
-        st.write("Thank you..")
