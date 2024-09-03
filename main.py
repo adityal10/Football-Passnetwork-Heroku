@@ -27,10 +27,10 @@ def main():
             st.caption(f'Match: {match}, Match ID: {match_id}')
 
             # EXTRACTING DATA FROM GITHUB USING REQUESTS
-            file_path = extract_data(match_id=match_id)
+            json_data = extract_data(match_id=match_id)
 
             # LOADING DATA FROM FOLDER
-            df = read_data(match_id=match_id, file_path=file_path)
+            df = read_data(match_id=match_id, json_data=json_data)
             # st.write(df)
                 
             # PUTTING ANOTHER OPTION OF SELECTING WHICH TEAM TO SHOW THEIR PASSES

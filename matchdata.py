@@ -26,36 +26,9 @@ def get_match_names(competition_id, season_id):
 
     return match_dict
 
-def extract_data(match_id):
-    try:
-        url = f'https://raw.githubusercontent.com/statsbomb/open-data/master/data/three-sixty/{match_id}.json'
-        directory = Path('./match_info')
-        file_path = directory / f'{match_id}.json'
-        
-        # Create the directory if it doesn't exist
-        if not directory.exists():
-            directory.mkdir(parents=True, exist_ok=True)
-        
-        # Check if the file already exists
-        if file_path.is_file():
-            st.caption("File already exists")
-        else:
-            response = requests.get(url)
-            response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
-            
-            # Write the content to a file
-            with open(file_path, 'wb') as f:
-                f.write(response.content)
-            st.caption(f'Saved data for match {match_id}')
-    
-    except requests.exceptions.RequestException as e:
-        st.caption(f'Error Occurred during data extract: {e}')
-        st.caption(f'Please select only the season 2022')
-    
-    return file_path
-
-def read_data(match_id, file_path):
-    match_360_df = pd.read_json(file_path)
+def read_data(match_id, json_data):
+    # match_360_df = pd.read_json(file_path)
+    match_360_df = pd.json_normalize(json_data)
     match_events_df = sb.events(match_id=match_id)
 
     df = pd.merge(left=match_events_df, right=match_360_df, left_on='id', right_on='event_uuid', how='left')
@@ -97,3 +70,30 @@ def team_statistics(df, team_name):
         stat_dict[key] = value
     
     return stat_dict 
+
+def extract_data(match_id):
+    try:
+        url = f'https://raw.githubusercontent.com/statsbomb/open-data/master/data/three-sixty/{match_id}.json'
+        # directory = Path('./match_info')
+        # file_path = directory / f'{match_id}.json'
+        
+        # # Create the directory if it doesn't exist
+        # if not directory.exists():
+        #     directory.mkdir(parents=True, exist_ok=True)
+        
+        # # Check if the file already exists
+        # if file_path.is_file():
+        #     st.caption("File already exists")
+        # else:
+        response = requests.get(url)
+        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
+
+        # Return the JSON content directly
+        json_data = response.json()
+        return json_data
+    
+    except requests.exceptions.RequestException as e:
+        st.caption(f'Error Occurred during data extract: {e}')
+        st.caption(f'Please select only the season 2022')
+    
+        return None
