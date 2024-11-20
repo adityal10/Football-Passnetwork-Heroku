@@ -29,12 +29,12 @@ def get_data(competition_name):
       return None, None
 
     # MAKING DICTIONARY OF COMPETITIONS AND SEASONS IDS
-    competitions = df.drop_duplicates('competition_name').set_index('competition_name')['competition_id'].to_dict()
-    competition_id = competitions[competition_name]
+   competitions = df.drop_duplicates('competition_name').set_index('competition_name')['competition_id'].to_dict()
+   competition_id = competitions[competition_name]
 
-    seasons = df.drop_duplicates('season_name').set_index('season_name')['season_id'].to_dict()
+   seasons = df.drop_duplicates('season_name').set_index('season_name')['season_id'].to_dict()
 
-    return competition_id, seasons
+   return competition_id, seasons
 
 def get_match_names(competition_id, season_id):
     df = sb.matches(competition_id=competition_id, season_id=season_id)
