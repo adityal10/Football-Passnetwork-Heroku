@@ -8,25 +8,25 @@ import streamlit as st
 def get_data(competition_name):
    """
     Fetch competition and season IDs for a given competition name.
-    """
-    try:
-        # Fetch all competitions
-        comp = sb.competitions()
-    except requests.exceptions.RequestException as e:
-        st.error("Failed to fetch competitions data. Please check API access.")
-        st.caption(f"Error details: {e}")
-        return None, None
-    except Exception as e:
-        st.error("Unexpected error occurred while fetching competitions data.")
-        st.caption(f"Error details: {e}")
-        return None, None
+   """
+   try:
+      # Fetch all competitions
+      comp = sb.competitions()
+   except requests.exceptions.RequestException as e:
+      st.error("Failed to fetch competitions data. Please check API access.")
+      st.caption(f"Error details: {e}")
+      return None, None
+   except Exception as e:
+      st.error("Unexpected error occurred while fetching competitions data.")
+      st.caption(f"Error details: {e}")
+      return None, None
 
-    # Filter for the specified competition
-    df = comp[comp['competition_name'] == competition_name]
+   # Filter for the specified competition
+   df = comp[comp['competition_name'] == competition_name]
 
-    if df.empty:
-        st.warning(f"No data found for competition: {competition_name}")
-        return None, None
+   if df.empty:
+      st.warning(f"No data found for competition: {competition_name}")
+      return None, None
 
     # MAKING DICTIONARY OF COMPETITIONS AND SEASONS IDS
     competitions = df.drop_duplicates('competition_name').set_index('competition_name')['competition_id'].to_dict()
